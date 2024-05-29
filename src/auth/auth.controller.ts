@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 import { AuthService } from './auth.service';
@@ -18,7 +18,7 @@ export class AuthController {
     return this.authService.login(email, password);
   }
 
-  @Get('refresh')
+  @Post('refresh')
   @UseGuards(RefreshTokenGuard)
   @ApiOkResponse({ type: AuthEntity })
   refresh(@Req() req: Request) {
@@ -27,7 +27,7 @@ export class AuthController {
     return this.authService.refreshTokens(user['sub'], user['refreshToken']);
   }
 
-  @Get('logout')
+  @Post('logout')
   @UseGuards(AccessTokenGuard)
   @ApiBearerAuth()
   @ApiOkResponse()
